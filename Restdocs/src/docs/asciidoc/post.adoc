@@ -19,10 +19,10 @@ include::{snippets}/get-v1-get-post/response-fields.adoc[]
 
 - GET | /posts 게시글 목록 조회
 
-=== Request
+==== Request
 include::{snippets}/get-v1-get-posts/http-request.adoc[]
 
-=== Response
+==== Response
 include::{snippets}/get-v1-get-posts/http-response.adoc[]
 include::{snippets}/get-v1-get-posts/response-body.adoc[]
 include::{snippets}/get-v1-get-posts/response-fields.adoc[]
@@ -32,12 +32,12 @@ include::{snippets}/get-v1-get-posts/response-fields.adoc[]
 
 - POST | /posts 게시글 생성
 
-=== Request
+==== Request
 include::{snippets}/post-v1-post-posts/http-request.adoc[]
 include::{snippets}/post-v1-post-posts/request-body.adoc[]
 include::{snippets}/post-v1-post-posts/request-fields.adoc[]
 
-=== Response
+==== Response
 include::{snippets}/post-v1-post-posts/http-response.adoc[]
 include::{snippets}/post-v1-post-posts/response-body.adoc[]
 include::{snippets}/post-v1-post-posts/response-fields.adoc[]
@@ -46,11 +46,11 @@ include::{snippets}/post-v1-post-posts/response-fields.adoc[]
 
 - DELETE | /posts 게시글 삭제
 
-=== Request
+==== Request
 include::{snippets}/delete-v1-delete-posts/http-request.adoc[]
 include::{snippets}/delete-v1-delete-posts/path-parameters.adoc[]
 
-=== Response
+==== Response
 include::{snippets}/delete-v1-delete-posts/http-response.adoc[]
 
 
