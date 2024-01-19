@@ -16,15 +16,14 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt // asciidoctorExt에 대한 선언
 }
 
 repositories {
     mavenCentral()
 }
 
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
+
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -33,22 +32,66 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor' // asciidoctorExt에 spring-restdocs-asciidoctor 의존성 추가
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // mockMvc 사용
 }
 
+// 1. 스니펫이 생성되는 디렉터리 경로를 설정합니다.
+// Spring REST Docs가 생성하는 스니펫들을 저장하는 곳(*-request.docs / *-response.docs)
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+// 2. 'test' 태스크를 설정
+// 'outputs.dir snippetsDir'는 JUnit 테스트 중에 생성되는 스니펫을 스니펫 디렉터리에 저장하도록 지정
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
+// 3. 'asciidoctor' 태스크를 설정
+// 'configurations'는 asciidoctor 확장을 사용할 때 필요한 의존성들을 포함
+// 'baseDirFollowsSourceFile'는 asciidoctor가 .adoc 파일에서 다른 파일을 include할 때 사용하는 설정 (index.adoc(post.adoc))
+// 'inputs.dir snippetsDir'는 asciidoctor가 스니펫을 찾을 위치를 설정
+// 'dependsOn test'는 asciidoctor 태스크가 'test' 태스크 이후에 실행되어야 함
 tasks.named('asciidoctor') {
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceFile()
     inputs.dir snippetsDir
     dependsOn test
 }
 
+// 4. 'asciidoctor' 태스크 실행 전에 수행될 작업을 정의
+// 'delete' 는 문서를 생성하기 전에 'src/main/resources/static/docs' 디렉터리를 삭제
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+// 5. 'copyDocument' 태스크를 등록
+// 'from'은 asciidoctor에 의해 생성된 HTML 파일들이 있는 디렉터리를 지정
+// 'into'는 HTML 파일들이 복사될 최종 위치를 지정 (build/docs/asciidoc -> src/main/resources/static/docs)
+tasks.register('copyDocument', Copy) {
+    dependsOn asciidoctor
+    from file("${asciidoctor.outputDir}")
+    into file("src/main/resources/static/docs")
+}
+
+// 6. 'build' 태스크를 설정
+// 'dependsOn copyDocument'는 빌드 프로세스가 'copyDocument' 태스크에 의존한다는 것을 의미
+// 이는 빌드 시 'copyDocument' 태스크가 실행되어 문서를 복사하도록 함
+build {
+    dependsOn copyDocument
+}
+
+
+// 7. 'bootJar' 태스크를 설정
+// 이 태스크는 JAR 파일을 생성하는 태스크
+// 'from' 절은 asciidoctor에 의해 생성된 HTML 파일들이 있는 디렉터리를 지정하고,
+// 'into' 절은 JAR 파일 내부의 'static/docs'로 파일을 복사
 bootJar {
     dependsOn asciidoctor
-    from ('${asciidoctor.outputDir}/html5') {
+    from ("${asciidoctor.outputDir}") {
         into 'static/docs'
     }
 }
