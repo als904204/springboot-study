@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import axios from "axios";
   export default {
     name: 'PostList',
     data() {
@@ -25,7 +24,8 @@ import axios from "axios";
 
     methods: {
       fetchPosts() {
-        axios.get('http://localhost:8080/api/posts')
+        // axios.get('http://localhost:8080/api/posts')
+        this.$axios.get('/posts')
         .then(response => {
           this.posts = response.data; // 응답 데이터를 posts 배열에 할당
         })
