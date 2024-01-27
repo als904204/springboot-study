@@ -1,11 +1,23 @@
 <template>
-  <div>
-    <h1 class="text-primary">게시글 목록</h1>
-      <ul>
-        <li v-for="post in posts" :key="post.id">
-          {{ post.title }}
-        </li>
-      </ul>
+  <div class="container">
+    <h1 class="text-center">게시글 목록</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>게시글 아이디</th>
+          <th>게시글 제목</th>
+          <th>게시글 작성자</th>
+        </tr>
+      </thead>
+
+      <tbody>
+          <tr v-for="post in posts" :key="post.id">
+            <td>{{ post.id }}</td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.author }}</td>
+          </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
