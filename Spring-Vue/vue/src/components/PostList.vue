@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <h1 class="text-center">게시글 목록</h1>
-    <table class="table table-striped">
+  <div>
+    <h1>게시글 목록</h1>
+    <table>
       <thead>
         <tr>
           <th>게시글 아이디</th>
@@ -13,7 +13,14 @@
       <tbody>
           <tr v-for="post in posts" :key="post.id">
             <td>{{ post.id }}</td>
-            <td>{{ post.title }}</td>
+
+           <!-- 게시글 제목 클릭 시, 해당 게시글 이동 -->
+            <td>
+              <router-link :to="{ name: 'PostDetails', params: { id: post.id }}">
+                {{ post.title }}
+              </router-link>
+            </td>
+
             <td>{{ post.author }}</td>
           </tr>
       </tbody>
