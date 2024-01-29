@@ -18,7 +18,6 @@ import Footer from "@/components/fragements/Footer.vue";
 
 <style>
 #app {
-  text-align: center;
   margin-top: 8px;
 }
 </style>
