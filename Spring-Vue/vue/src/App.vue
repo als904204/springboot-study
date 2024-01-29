@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar/>
-    <Header/>
+<!--    <Header/>-->
     <router-view/>
     <Footer/>
   </div>
@@ -9,7 +9,7 @@
 
 
 <script setup>
-import Header from "@/components/fragements/Header.vue";
+// import Header from "@/components/fragements/Header.vue";
 import Navbar from "@/components/fragements/Navbar.vue";
 import Footer from "@/components/fragements/Footer.vue";
 

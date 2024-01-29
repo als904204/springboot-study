@@ -31,7 +31,7 @@ export default {
   display: flex;
   color: black;
   background-color: #f9f9f9; /* 푸터 배경색 */
-  position: fixed;
+  margin-top:48px;
   height: 180px;
   width: 100%;
   bottom: 0;

@@ -1,5 +1,5 @@
 <template>
-      <Menubar :model="items"></Menubar>
+      <Menubar :model="items" class="menubar"></Menubar>
 </template>
 
 <script setup>
@@ -59,6 +59,10 @@ const items = ref([
 
 
 <style scoped>
+.menubar {
+  margin-bottom : 40px;
+}
+
 .p-menubar {
   display: flex;
   justify-content: center;
