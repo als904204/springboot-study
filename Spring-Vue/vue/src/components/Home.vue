@@ -19,6 +19,11 @@
         <Button id="btn-review" label="리뷰순" severity="Primary" size="large"  rounded />
         <Button id="btn-rating" label="평점순" severity="Primary" size="large"  rounded />
       </div>
+    <ul>
+      <li v-for="post in posts" :key="post.id">
+        <h3>{{post.title}}</h3>
+      </li>
+    </ul>
   </div>
 </session>
 
@@ -52,16 +57,29 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import notice1 from '@/assets/notice1.png';
 import notice2 from '@/assets/notice2.png';
 import { Carousel, Slide, Pagination } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 
+import axios from "axios";
+
 const images = ref([
     notice1,
     notice2,
 ]);
+
+const posts = ref([]);
+
+onMounted(async ()=>{
+  const response = await axios.get('http://localhost:8080/api/posts');
+  posts.value = response.data;
+  console.log("data=",posts.value)
+})
+
+
+
 </script>
 
 
