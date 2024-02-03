@@ -28,11 +28,12 @@ public class SecurityConfig {
             .httpBasic((basic) -> basic.disable());
         http
             .oauth2Login((oauth2) -> oauth2
+                .loginPage("/customLogin")
                 .userInfoEndpoint(config ->
                     config.userService(customOAuth2Service)));
         http
             .authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/", "/oauth2/**", "/login/**").permitAll()
+                .requestMatchers("/", "/oauth2/**", "/customLogin/**").permitAll()
                 .anyRequest().authenticated());
         return http.build();
     }
