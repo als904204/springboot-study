@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
@@ -15,6 +16,7 @@ public class SecurityConfig {
 
     private final CustomOAuth2Service customOAuth2Service;
     private final CustomClientRegistrationRepository clientRegistrationRepository;
+
     public SecurityConfig(CustomOAuth2Service customOAuth2Service,
         CustomClientRegistrationRepository clientRegistrationRepository) {
         this.customOAuth2Service = customOAuth2Service;
@@ -24,18 +26,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf((csrf) -> csrf.disable());
+            .csrf(AbstractHttpConfigurer::disable);
         http
-            .formLogin((login) -> login.disable());
+            .formLogin(AbstractHttpConfigurer::disable);
         http
-            .httpBasic((basic) -> basic.disable());
+            .httpBasic(AbstractHttpConfigurer::disable);
         http
             .oauth2Login((oauth2) -> oauth2
                 .loginPage("/customLogin")
-                .clientRegistrationRepository(clientRegistrationRepository.clientRegistrationRepository())
+                .clientRegistrationRepository(
+                    clientRegistrationRepository.clientRegistrationRepository())
                 .userInfoEndpoint(config ->
                     config.userService(customOAuth2Service))
                 .successHandler(new SimpleUrlAuthenticationSuccessHandler("/success")));
+
         http
             .authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/", "/oauth2/**", "/customLogin/**").permitAll()
