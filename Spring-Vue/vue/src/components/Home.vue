@@ -57,27 +57,16 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref } from 'vue';
 import notice1 from '@/assets/notice1.png';
 import notice2 from '@/assets/notice2.png';
 import { Carousel, Slide, Pagination } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 
-import axios from "axios";
-
 const images = ref([
     notice1,
     notice2,
 ]);
-
-const posts = ref([]);
-
-onMounted(async ()=>{
-  const response = await axios.get('http://localhost:8080/api/posts');
-  posts.value = response.data;
-  console.log("data=",posts.value)
-})
-
 
 
 </script>
