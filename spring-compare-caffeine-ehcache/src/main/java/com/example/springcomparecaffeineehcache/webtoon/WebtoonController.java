@@ -29,4 +29,5 @@ public class WebtoonController {
         log.info("[caffeine] 컨트롤러 호출");
         return ResponseEntity.ok().body(webtoonService.findPlatformWebtoonsByCaffeine(platform));
     }
+
 }

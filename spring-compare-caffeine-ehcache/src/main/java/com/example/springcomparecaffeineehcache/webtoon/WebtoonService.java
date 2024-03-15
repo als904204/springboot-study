@@ -32,7 +32,7 @@ public class WebtoonService {
     }
 
 
-//    @Cacheable(value = "platformCaffeine", key = "#platform", condition = "#platform.equals('NAVER')")
+    @Cacheable(value = "platformCaffeine", key = "#platform", condition = "#platform.equals('NAVER')")
     public List<WebtoonDto> findPlatformWebtoonsByCaffeine(String platform) {
         log.info("[caffeine] 서비스 호출");
 
@@ -53,6 +53,8 @@ public class WebtoonService {
 
 
 
+
+
     @PostConstruct
     void initTempData() {
         List<Webtoon> naver = new ArrayList<>();
@@ -67,5 +69,6 @@ public class WebtoonService {
         webtoonRepository.saveAll(naver);
         webtoonRepository.saveAll(kakao);
     }
+
 
 }
