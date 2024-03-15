@@ -15,9 +15,9 @@ public class WebtoonService {
 
     private final WebtoonRepository webtoonRepository;
 
-    @Cacheable(value = "platform", key = "#platform", condition = "#platform.equals('NAVER')")
-    public List<WebtoonDto> findAll(String platform) {
-        log.info("서비스 호출");
+    @Cacheable(value = "platformEhcache", key = "#platform", condition = "#platform.equals('NAVER')")
+    public List<WebtoonDto> findPlatformWebtoonsByEhcache(String platform) {
+        log.info("[ehcache] 서비스 호출");
 
         List<Webtoon> webtoons = webtoonRepository.findByPlatform(platform);
 
@@ -30,6 +30,25 @@ public class WebtoonService {
 
         return response;
     }
+
+
+//    @Cacheable(value = "platformCaffeine", key = "#platform", condition = "#platform.equals('NAVER')")
+    public List<WebtoonDto> findPlatformWebtoonsByCaffeine(String platform) {
+        log.info("[caffeine] 서비스 호출");
+
+        List<Webtoon> webtoons = webtoonRepository.findByPlatform(platform);
+
+        List<WebtoonDto> response = new ArrayList<>();
+
+
+        for (Webtoon webtoon : webtoons) {
+            response.add(new WebtoonDto(webtoon));
+        }
+
+        return response;
+    }
+
+
 
 
 

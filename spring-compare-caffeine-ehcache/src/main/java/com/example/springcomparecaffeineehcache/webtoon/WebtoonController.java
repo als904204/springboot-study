@@ -2,7 +2,6 @@ package com.example.springcomparecaffeineehcache.webtoon;
 
 
 import java.util.List;
-import javax.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +18,15 @@ public class WebtoonController {
 
     private final WebtoonService webtoonService;
 
-    @GetMapping
-    public ResponseEntity<List<WebtoonDto>> findAll(@RequestParam String platform) {
+    @GetMapping("/ehcache")
+    public ResponseEntity<List<WebtoonDto>> webtoonsByEhcache(@RequestParam String platform) {
+        log.info("[ehcache] 컨트롤러 호출");
+        return ResponseEntity.ok().body(webtoonService.findPlatformWebtoonsByEhcache(platform));
+    }
 
-        log.info("컨트롤러 호출");
-        return ResponseEntity.ok().body(webtoonService.findAll(platform));
+    @GetMapping("/caffeine")
+    public ResponseEntity<List<WebtoonDto>> webtoonsByCaffeine(@RequestParam String platform) {
+        log.info("[caffeine] 컨트롤러 호출");
+        return ResponseEntity.ok().body(webtoonService.findPlatformWebtoonsByCaffeine(platform));
     }
 }
