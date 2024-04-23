@@ -31,6 +31,11 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    private static final String[] DEFAULT_WHITELIST = {
+        "/error"
+    };
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -38,11 +43,14 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(req -> req
-                .requestMatchers("/api/v1/auth/authenticate", "api/v1/auth/register")
+                .requestMatchers("/api/v1/auth/authenticate", "api/v1/auth/register","/api/v1/test/**")
                 .permitAll()
+                .requestMatchers(DEFAULT_WHITELIST)
+                .permitAll()
+                .requestMatchers("/api/v1/users/**").hasAnyRole("USER","ADMIN")
                 .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
                 .anyRequest()
-                .permitAll()
+                .authenticated()
             )
             .userDetailsService(userDetailsService)
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
