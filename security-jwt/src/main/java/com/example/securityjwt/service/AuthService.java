@@ -1,5 +1,7 @@
 package com.example.securityjwt.service;
 
+import com.example.securityjwt.common.exception.CustomException;
+import com.example.securityjwt.common.exception.ServerExceptionCode;
 import com.example.securityjwt.common.service.TokenClockHolder;
 import com.example.securityjwt.controller.dto.AuthRequest;
 import com.example.securityjwt.controller.dto.AuthResponse;
@@ -32,7 +34,7 @@ public class AuthService {
 
     public AuthResponse register(AuthRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username is already exists!");
+            throw new CustomException(ServerExceptionCode.DUPLICATED);
         }
 
         String encodePwd = passwordEncoder.encode(request.getPassword());
@@ -53,10 +55,10 @@ public class AuthService {
         );
 
         User user = userRepository.findByUsername(request.getUsername())
-            .orElseThrow(() -> new IllegalArgumentException("User Not Found!"));
+            .orElseThrow(() -> new CustomException(ServerExceptionCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-          throw new IllegalArgumentException("User authentication failed!");
+          throw new CustomException(ServerExceptionCode.FORBIDDEN);
         }
 
         String token = jwtService.generateToken(request, tokenClockHolder);
