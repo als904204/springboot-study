@@ -1,8 +1,11 @@
 package com.example.securityjwt.security;
 
+import com.example.securityjwt.common.exception.CustomException;
+import com.example.securityjwt.common.exception.ServerExceptionCode;
 import com.example.securityjwt.common.service.TokenClockHolder;
 import com.example.securityjwt.controller.dto.AuthRequest;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -10,9 +13,11 @@ import io.jsonwebtoken.security.Keys;
 import java.util.Date;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class JwtService {
 
@@ -39,30 +44,20 @@ public class JwtService {
             .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            extractAllClaims(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
-
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-            .parser()
-            .verifyWith(getSignInKey())
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
+        try {
+            return Jwts
+                .parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ServerExceptionCode.EXPIRED_TOKEN);
+        } catch (JwtException e) {
+            throw new CustomException(ServerExceptionCode.INVALID_TOKEN);
+        }
     }
 
     private SecretKey getSignInKey() {

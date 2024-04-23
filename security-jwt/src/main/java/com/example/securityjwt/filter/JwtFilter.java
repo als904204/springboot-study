@@ -1,5 +1,8 @@
 package com.example.securityjwt.filter;
 
+
+import com.example.securityjwt.common.exception.CustomException;
+import com.example.securityjwt.common.util.ResponseUtils;
 import com.example.securityjwt.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,15 +48,26 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         String token = bearerToken.substring(7);
 
-        // 정상적인 토큰 이라면
-        if (jwtService.validateToken(token)) {
+        try {
+            String username = jwtService.extractUsername(token);
+
             UsernamePasswordAuthenticationToken authentication = getAuthentication(token);
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (CustomException e) {
+            ResponseUtils.setErrorResponse(response, e.getExceptionCode().getStatus(),
+                e.getExceptionCode());
+
+            return;
         }
+
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(token);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
@@ -66,5 +80,7 @@ public class JwtFilter extends OncePerRequestFilter {
             userDetails.getAuthorities());
 
     }
+
+
 
 }
