@@ -7,7 +7,6 @@ import com.example.securityjwt.controller.dto.AuthRequest;
 import com.example.securityjwt.controller.dto.AuthResponse;
 import com.example.securityjwt.model.User;
 import com.example.securityjwt.repository.UserRepository;
-import com.example.securityjwt.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

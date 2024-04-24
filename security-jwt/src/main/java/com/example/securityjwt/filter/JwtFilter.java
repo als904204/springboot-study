@@ -3,7 +3,7 @@ package com.example.securityjwt.filter;
 
 import com.example.securityjwt.common.exception.CustomException;
 import com.example.securityjwt.common.util.ResponseUtils;
-import com.example.securityjwt.security.JwtService;
+import com.example.securityjwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

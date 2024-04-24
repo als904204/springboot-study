@@ -1,4 +1,4 @@
-package com.example.securityjwt.security;
+package com.example.securityjwt.service;
 
 import com.example.securityjwt.common.exception.CustomException;
 import com.example.securityjwt.common.exception.ServerExceptionCode;
