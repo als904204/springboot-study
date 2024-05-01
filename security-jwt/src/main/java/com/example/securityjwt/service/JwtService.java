@@ -3,7 +3,9 @@ package com.example.securityjwt.service;
 import com.example.securityjwt.common.exception.CustomException;
 import com.example.securityjwt.common.exception.ServerExceptionCode;
 import com.example.securityjwt.common.service.TokenClockHolder;
-import com.example.securityjwt.controller.dto.AuthRequest;
+import com.example.securityjwt.controller.dto.RegisterRequest;
+import com.example.securityjwt.controller.dto.TokenDto;
+import com.example.securityjwt.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -34,10 +36,29 @@ public class JwtService {
         return resolver.apply(claims);
     }
 
-    public String generateToken(AuthRequest authRequest, TokenClockHolder tokenClockHolder) {
+    public TokenDto parseToken(String token) {
+        Claims claims = Jwts
+            .parser()
+            .verifyWith(getSignInKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+
+        String username = claims.getSubject();
+        String role = claims.get("role", String.class);
+        return TokenDto.builder()
+            .username(username)
+            .role(role)
+            .token(token)
+            .build();
+    }
+
+
+    public String generateToken(User user, TokenClockHolder tokenClockHolder) {
         return Jwts
             .builder()
-            .subject(authRequest.getUsername())
+            .subject(user.getUsername())
+            .claim("role", user.getRole().name())
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + tokenClockHolder.jwtExpiration()))
             .signWith(getSignInKey())

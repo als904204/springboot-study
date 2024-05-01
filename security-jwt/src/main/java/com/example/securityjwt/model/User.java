@@ -1,6 +1,6 @@
 package com.example.securityjwt.model;
 
-import com.example.securityjwt.controller.dto.AuthRequest;
+import com.example.securityjwt.controller.dto.RegisterRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,7 +37,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static User create(AuthRequest request,String password) {
+    public static User create(RegisterRequest request,String password) {
         return User.builder()
             .username(request.getUsername())
             .password(password)

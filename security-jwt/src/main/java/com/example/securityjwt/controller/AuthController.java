@@ -1,8 +1,8 @@
 package com.example.securityjwt.controller;
 
 
-import com.example.securityjwt.controller.dto.AuthRequest;
-import com.example.securityjwt.controller.dto.AuthResponse;
+import com.example.securityjwt.controller.dto.RegisterRequest;
+import com.example.securityjwt.controller.dto.TokenDto;
 import com.example.securityjwt.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,14 +21,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest authRequest) {
-        AuthResponse response = authService.register(authRequest);
+    public ResponseEntity<TokenDto> register(@RequestBody RegisterRequest registerRequest) {
+        TokenDto response = authService.register(registerRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest authRequest) {
-        AuthResponse response = authService.authenticate(authRequest);
+    public ResponseEntity<TokenDto> authenticate(@RequestBody RegisterRequest registerRequest) {
+        TokenDto response = authService.authenticate(registerRequest);
         return ResponseEntity.ok(response);
     }
 
