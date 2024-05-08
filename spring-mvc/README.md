@@ -47,3 +47,11 @@ public class FrontControllerServletV1 extends HttpServlet {
 
 }
 ```
+
+---
+## V2
+![img_2.png](img/img_2.png)
+
+- controller 가 jsp 를 직접 return 하지 않는다.
+
+---
