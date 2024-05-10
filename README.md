@@ -231,5 +231,4 @@ public void helloMethod() {
 
 ---
 
-## Q
 
