@@ -1,5 +1,4 @@
-# Spring 공부 정리 Repository
-
+# Spring 공부 정리
 ---
 
 ## Q 스프링 프레임워크란?
