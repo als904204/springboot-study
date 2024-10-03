@@ -215,3 +215,27 @@ public class BatchProcessingApplication {
 ```
 
 > SpringBoot 가 실행되고, Batch 작업이 실행된 다음에 성공적으로 작업이 완료되었다는 로그 확인
+
+---
+
+# JPA 성능 문제와 JDBC
+스프링 배치 read와 write 부분을 JPA로 구성할 경우 JDBC 대비 처리 속도가 엄청나게 저하 된다.
+
+Reader의 경우 큰 영향을 미치진 않지만,Wirte는 다음과 같은 이유로 성능 저하가 발생한다.
+
+## 이유
+Entity의 ID 생성 전략은 보통 IDENTITY로 설정한다. 과정은 다음과 같다.
+- ID값은 DB에 INSERT 후 결정된다. 즉 DB에 레코드가 삽입이 된 그 레코드의 ID값을 알 수 있다
+- JPA는 엔티티를 영속성 컨텍스트에 넣어 관리한다
+  - JPA가 새 엔티티를 영속성 컨텍스트에 등록한다.
+  - 엔티티를 DB에 INSERT하는 쿼리문이 실행된다.
+  - DB는 AUTO_INCREMENT를 통해 새 ID값 만들 저장한다.
+  - JPA는 **새로 생성된 ID 값을** 가져와야 한다.
+    - 이 때 JDBC의 getGeneratedKeys() 를 이용하여 DB생성된 ID 값을 조회한다.
+  - 조회된 ID값을 영속성 켄텍스트 해당 엔티티에 반영한
+> 즉 IDENTITY 전략은 insert 쿼리마다 즉시 ID 값을 조회하는 추가적인 작업이 필요하다
+> 
+> JDBC 기반으로 작성하게 된다면 청크로 설정한 값이 모이게 된다면 bulk 쿼리로 단 1번의 insert가 수행되지만
+> JPA의 IDENTITY 전략 때문에 bulk 쿼리 대신 각각의 수만큼 insert가 수행된다
+
+
