@@ -21,7 +21,7 @@ dependencies {
     testImplementation 'org.springframework.batch:spring-batch-test'
 
     // DB
-    runtimeOnly 'com.mysql:mysql-connector-java'
+    runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'org.hsqldb:hsqldb'
     implementation 'org.springframework:spring-jdbc:6.1.12'
     //runtimeOnly 'com.h2database:h2'
@@ -29,7 +29,7 @@ dependencies {
     // Spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 }
