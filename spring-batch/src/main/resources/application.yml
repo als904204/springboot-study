@@ -1,9 +1,9 @@
 spring:
   batch:
     job:
-      enabled: false
+      enabled: false # 배치 작업 자동 실행 비활성화
     jdbc:
-      initialize-schema: always
+      initialize-schema: always # spring batch 스크립트 생성 스키마 항상 초기화
 
   # 메타데이터 DB 연동 설정
   datasource-meta:

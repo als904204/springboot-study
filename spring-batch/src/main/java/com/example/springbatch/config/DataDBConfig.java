@@ -15,11 +15,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @EnableJpaRepositories(
     basePackages = "com.example.springbatch",
-    entityManagerFactoryRef = "dataEntityManager",
+    entityManagerFactoryRef = "dataEntityManager", // 설정파일을 클래스단에서 정의함
     transactionManagerRef = "dataTransactionManager"
 )
 public class DataDBConfig {
 
+    // dataDB 연걸 설정
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource-data")
     public DataSource dataDBSource() {
@@ -28,6 +29,7 @@ public class DataDBConfig {
             .build();
     }
 
+    // JPA 엔티티 관리, DB 작업 설정 (yml, properties 부분을 여기서 함)
     @Bean
     public LocalContainerEntityManagerFactoryBean dataEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -44,6 +46,7 @@ public class DataDBConfig {
         return em;
     }
 
+    // 트랜잭션 설정
     @Bean
     public PlatformTransactionManager dataTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
