@@ -3,15 +3,25 @@ spring:
     jcache:
       config: classpath:ehcache.xml
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/study_db?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root  # MySQL 사용자 이름
+    password: root  # MySQL 비밀번호
     hikari:
       maximum-pool-size: 50
-  h2:
-    console:
-      enabled: true
 
   jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
+    hibernate:
+      ddl-auto: none  # schema.sql을 사용할 것이므로 none으로 설정
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  sql:
+    init:
+      mode: never
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
