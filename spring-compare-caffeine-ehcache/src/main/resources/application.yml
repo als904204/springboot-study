@@ -5,8 +5,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/study_db?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root  # MySQL 사용자 이름
-    password: root  # MySQL 비밀번호
+    username: root
+    password: root
     hikari:
       maximum-pool-size: 50
 
@@ -14,7 +14,10 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     open-in-view: false
     hibernate:
-      ddl-auto: none  # schema.sql을 사용할 것이므로 none으로 설정
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         show_sql: true
