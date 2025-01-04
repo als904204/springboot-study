@@ -1,0 +1,8 @@
+logging:
+  config: classpath:logback-spring-prod.xml
+  level:
+    root: INFO
+  file:
+    path: ${LOG_PATH:/var/log/myapp}  # 운영 서버에서는 기본값을 /var/log/myapp 등으로 지정
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg [corr=%X{correlationId}]%n"
