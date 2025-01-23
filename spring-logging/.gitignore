@@ -1,0 +1,9 @@
+# IntelliJ IDEA 관련 파일 무시
+.idea/*.xml
+
+# 로그 파일 무시
+*.log
+*.log.gz
+
+# 빌드 결과물 무시
+target/
