@@ -11,6 +11,8 @@
     <!-- 파일 출력 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>
+
+        <!-- 로그파일을 분단위로 저장하고, 최대 5개 제한 및 gz으로 압축 후 추출 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>application.%d{yyyy-MM-dd_HH-mm}.log.gz</fileNamePattern>
             <maxHistory>5</maxHistory>
