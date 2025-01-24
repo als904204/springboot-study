@@ -1,6 +1,13 @@
 <configuration>
     <property name="LOG_FILE" value="application-dev.log"/>
 
+    <!-- Logstash로 전송할 Appender -->
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <!-- 배포서버는 실제 ip -->
+        <destination>localhost:5044</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
     <!-- 콘솔 출력 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -26,5 +33,6 @@
     <root level="info">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
+        <appender-ref ref="LOGSTASH" />
     </root>
 </configuration>
