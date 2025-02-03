@@ -1,4 +1,4 @@
-package com.compare.config;
+package com.compare.redis_vs_caffeine.config;
 
 import java.time.Duration;
 import java.util.Arrays;
