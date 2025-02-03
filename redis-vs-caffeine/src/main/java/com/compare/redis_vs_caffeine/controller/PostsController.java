@@ -1,10 +1,10 @@
-package com.compare.controller;
+package com.compare.redis_vs_caffeine.controller;
 
-import com.compare.redis_vs_caffeine.entity.Posts;
+import com.compare.redis_vs_caffeine.dto.PageResponse;
 import com.compare.redis_vs_caffeine.service.PostsService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -13,9 +13,10 @@ public class PostsController {
 
     private final PostsService postsService;
 
+    // http://localhost:8080/posts?page=1
     @GetMapping("/posts")
-    public List<Posts> getPosts() {
-        return postsService.getPostsData();
+    public PageResponse getPosts(@RequestParam(defaultValue = "1") int page) {
+        return postsService.getPostsData(page);
     }
 
 }
